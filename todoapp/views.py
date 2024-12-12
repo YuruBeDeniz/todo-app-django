@@ -1,7 +1,8 @@
 from rest_framework.response import Response
-from rest_framework.decorators import api_view
+from rest_framework.decorators import api_view, permission_classes
 from .models import Task
 from .serializers import TaskSerializer
+from rest_framework.permissions import IsAuthenticatedOrReadOnly
 
 
 @api_view(['GET'])
@@ -19,12 +20,15 @@ def getTask(request, pk):
 
 
 @api_view(['POST'])
+@permission_classes([IsAuthenticatedOrReadOnly])
 def addTask(request):
+    print(f"Authenticated User: {request.user}, Is Authenticated: {request.user.is_authenticated}")
+
     serializer = TaskSerializer(data=request.data)
     
     if serializer.is_valid():
-        serializer.save()
-    
+        serializer.save(owner=request.user)
+    print(request.user)
     return Response(serializer.data)
 
 

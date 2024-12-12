@@ -15,7 +15,7 @@ class SignUpView(APIView):
             username = request.data.get('username')
             password = request.data.get('password')
             email = request.data.get('email')
-            print(request.data)
+            # print(request.data)
 
             if not username or not password:
                 return Response({'error': 'Username and password are required'}, status=status.HTTP_400_BAD_REQUEST)
@@ -32,6 +32,8 @@ class LoginView(APIView):
     def post(self, request):
         username = request.data.get('username')
         password = request.data.get('password')
+        
+        print(request.data)
         
         if not username or not password:
             return Response({'error': 'Username and password are required'}, status=status.HTTP_400_BAD_REQUEST)
